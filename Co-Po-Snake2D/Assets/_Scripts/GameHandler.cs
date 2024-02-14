@@ -9,10 +9,10 @@ public class GameHandler : MonoBehaviour
     {
         Debug.Log("Game started");
 
-        GameObject snakeHead = new GameObject();
+        /*GameObject snakeHead = new GameObject();
 
         SpriteRenderer snakeHeadSprite = snakeHead.AddComponent<SpriteRenderer>();
-        snakeHeadSprite.sprite = GameAssetManager.instance.snakeHead;
+        snakeHeadSprite.sprite = GameAssetManager.instance.snakeHead;*/
 
     }
 
