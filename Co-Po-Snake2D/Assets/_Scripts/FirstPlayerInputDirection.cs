@@ -16,7 +16,6 @@ public class FirstPlayerInputDirection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             Direction = Directions.Up;
-
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {

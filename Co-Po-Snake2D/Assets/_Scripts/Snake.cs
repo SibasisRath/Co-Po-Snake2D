@@ -41,44 +41,24 @@ public class Snake : MonoBehaviour
         {
             gridMoveDirection.y = gridUnit;
             gridMoveDirection.x = 0;
-           /* if (gridMoveDirection.y != -gridUnit)
-            {
-                gridMoveDirection.y = gridUnit;
-                gridMoveDirection.x = 0;
-            }*/
         }
 
-        if (direction == Directions.Down && gridMoveDirection.y != gridUnit)
+        else if (direction == Directions.Down && gridMoveDirection.y != gridUnit)
         {
             gridMoveDirection.y = -gridUnit;
             gridMoveDirection.x = 0;
-           /* if (gridMoveDirection.y != gridUnit)
-            {
-                gridMoveDirection.y = -gridUnit;
-                gridMoveDirection.x = 0;
-            }*/
         }
 
-        if (direction == Directions.Left && gridMoveDirection.x != gridUnit)
+        else if (direction == Directions.Left && gridMoveDirection.x != gridUnit)
         {
             gridMoveDirection.x = -gridUnit;
             gridMoveDirection.y = 0;
-            /*if (gridMoveDirection.x != gridUnit)
-            {
-                gridMoveDirection.x = -gridUnit;
-                gridMoveDirection.y = 0;
-            }*/
         }
 
-        if (direction == Directions.Right && gridMoveDirection.x != -gridUnit)
+        else if (direction == Directions.Right && gridMoveDirection.x != -gridUnit)
         {
             gridMoveDirection.x = gridUnit;
             gridMoveDirection.y = 0;
-           /* if (gridMoveDirection.x != -gridUnit)
-            {
-                gridMoveDirection.x = gridUnit;
-                gridMoveDirection.y = 0;
-            }*/
         }
     }
 
