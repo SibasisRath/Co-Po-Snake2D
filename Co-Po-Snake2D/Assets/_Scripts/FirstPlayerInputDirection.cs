@@ -38,7 +38,6 @@ public class FirstPlayerInputDirection : MonoBehaviour
         if (timer.CanPerform)
         {
             snake.Direction = d;
-            timer.CanPerform = false;
         }
     }
 }
