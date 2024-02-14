@@ -5,7 +5,8 @@ using UnityEngine;
 public class SecondPlayerInputDirection : MonoBehaviour
 {
     private Directions direction;
-    [SerializeField] Snake snake;
+    [SerializeField] private Snake snake;
+    [SerializeField] private Timer timer;
 
     public Directions Direction { get => direction; set => direction = value; }
 
@@ -28,6 +29,16 @@ public class SecondPlayerInputDirection : MonoBehaviour
         {
             Direction = Directions.Right;
         }
-        snake.Direction = direction;
+        ChangeDirection(Direction);
+    }
+
+    private void ChangeDirection(Directions d)
+    {
+        //this checks to change the direction twice at a single place
+        if (timer.CanPerform)
+        {
+            snake.Direction = d;
+            timer.CanPerform = false;
+        }
     }
 }
