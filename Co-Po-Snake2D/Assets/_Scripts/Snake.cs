@@ -66,9 +66,9 @@ public class Snake : MonoBehaviour
     {
         if (timer.CanPerform)
         {
+            timer.CanPerform = false;
             gridPosition += gridMoveDirection;
         }
-
         transform.position = new Vector3(gridPosition.x, gridPosition.y);
         transform.eulerAngles = new Vector3(0,0,HandleRotation(gridMoveDirection) - 90f);
     }
