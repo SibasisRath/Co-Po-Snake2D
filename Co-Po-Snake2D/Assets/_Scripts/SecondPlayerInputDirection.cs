@@ -35,10 +35,11 @@ public class SecondPlayerInputDirection : MonoBehaviour
     private void ChangeDirection(Directions d)
     {
         //this checks to change the direction twice at a single place
-        if (timer.CanPerform)
+       /* if (timer.CanPerform)
         {
             snake.Direction = d;
-            timer.CanPerform = false;
-        }
+        }*/
+        snake.Direction = d;
+
     }
 }

@@ -7,7 +7,7 @@ public class Timer : MonoBehaviour
     [SerializeField] private float timeCounter;
     [SerializeField] private float maxTime;
     [SerializeField] private float speed;
-    private bool canPerform;
+    [SerializeField] private bool canPerform;
 
     public bool CanPerform { get => canPerform; set => canPerform = value; }
     public float TimeCounter { get => timeCounter; set => timeCounter = value; }
