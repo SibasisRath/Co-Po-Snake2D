@@ -14,6 +14,14 @@ public class Snake : MonoBehaviour
 
     public Directions Direction { get => direction; set => direction = value; }
 
+
+    private LevelGrid levelGrid;
+
+    public void SetUp(LevelGrid levelGrid)
+    {
+        this.levelGrid = levelGrid;
+    }
+
     private void Awake()
     {
         gridMoveDirection = new Vector2Int(gridUnit, 0);
@@ -68,6 +76,8 @@ public class Snake : MonoBehaviour
         {
             timer.CanPerform = false;
             gridPosition += gridMoveDirection;
+            levelGrid.SnakeMoved(gridPosition);
+            //Debug.Log("position " + gridPosition);
         }
         transform.position = new Vector3(gridPosition.x, gridPosition.y);
         transform.eulerAngles = new Vector3(0,0,HandleRotation(gridMoveDirection) - 90f);
@@ -81,5 +91,10 @@ public class Snake : MonoBehaviour
             n += 360;
         }
         return n;
+    }
+
+    public Vector2Int GetSnakeGritPosition()
+    {
+        return gridPosition;
     }
 }

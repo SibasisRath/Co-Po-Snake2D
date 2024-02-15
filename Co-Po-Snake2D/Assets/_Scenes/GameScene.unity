@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd69751f071a05469ba4ef6e56c3648, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snakeReferenceOne: {fileID: 2034850494}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,6 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 733290579}
   - component: {fileID: 733290580}
+  - component: {fileID: 733290581}
   m_Layer: 0
   m_Name: GameAsset
   m_TagString: Untagged
@@ -306,7 +308,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3fccccbef4a1043a19b801be602954, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakeHead: {fileID: 1525457887, guid: 96fdda8a2cd687a4dbfe89125278eec2, type: 3}
+  massGainer1: {fileID: -1752723132, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  massGainer2: {fileID: -1932499330, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  massLosser1: {fileID: -1779859777, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  massLosser2: {fileID: 134367905, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  speedBoostPowerUp: {fileID: -1538317722, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  scoreBoostPowerUp: {fileID: -1341332222, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+  shildPowerUp: {fileID: -383865554, guid: 71f12c75e2a1e8347856e41ed392c88d, type: 3}
+--- !u!114 &733290581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733290578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b355b1e1e596f49998aef2acb40808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeCounter: 0.1
+  maxTime: 1
+  speed: 1
+  canPerform: 0
 --- !u!1 &1202682517
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,7 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridPosition: {x: 100, y: 100}
-  gridUnit: 5
+  gridUnit: 10
   timer: {fileID: 2034850495}
 --- !u!114 &2034850495
 MonoBehaviour:
@@ -508,6 +532,7 @@ MonoBehaviour:
   timeCounter: 0.5
   maxTime: 1
   speed: 3
+  canPerform: 0
 --- !u!114 &2034850496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +542,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2034850491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a07d530829494d043999ae6d37c321f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 27fb386b80cfd6a4b8afcba8dfd08d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   snake: {fileID: 2034850494}
