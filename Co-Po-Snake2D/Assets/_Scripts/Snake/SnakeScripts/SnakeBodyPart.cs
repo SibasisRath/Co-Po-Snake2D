@@ -18,4 +18,9 @@ public class SnakeBodyPart
         this.gridPosition = gridPosition;
         transform.position = new Vector3(this.gridPosition.x, this.gridPosition.y);
     }
+
+    public Vector2Int GetGridPosition()
+    {
+        return this.gridPosition;
+    }
 }

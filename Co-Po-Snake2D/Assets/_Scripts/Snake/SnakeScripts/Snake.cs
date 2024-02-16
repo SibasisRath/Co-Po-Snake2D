@@ -9,7 +9,6 @@ public class Snake : MonoBehaviour
     [SerializeField] private int gridUnit; // This is the length snake will move each time
     private Vector2Int gridMoveDirection; // This will help to change direction
     private Directions direction; // this will be the all the allowed direction
-    public Directions Direction { get => direction; set => direction = value; }
     private LevelGrid levelGrid; // Reference to Grid. This is to interact with consumable
     public void SetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
 
@@ -17,20 +16,36 @@ public class Snake : MonoBehaviour
     private List<Vector2Int> snakeMovePositionLIst; // store the positions of the snake body parts
     private List<SnakeBodyPart> snakeBodyPartsList;
 
+    private SnakeStates snakeState;
+
+
+    public Directions Direction { get => direction; set => direction = value; }
+
     private void Awake()
     {
-        
         gridMoveDirection = new Vector2Int(0, gridUnit); //initial movement
         snakeBodySize = 0;
         snakeMovePositionLIst = new List<Vector2Int>();
         snakeBodyPartsList = new List<SnakeBodyPart>();
     }
-  
+
+    private void Start()
+    {
+        snakeState = SnakeStates.Alive;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        HandelDirection();
-        HandleMovement();
+        switch (snakeState)
+        {
+            case SnakeStates.Alive:
+                HandelDirection();
+                HandleMovement();
+                break;
+            case SnakeStates.Dead:
+                break;
+        }
     }
 
     private void HandelDirection()
@@ -73,11 +88,19 @@ public class Snake : MonoBehaviour
                 CreateSnakeBody();
                 Debug.Log(snakeBodySize);
             }
-            if (snakeMovePositionLIst.Count >= snakeBodySize+1)
+            if (snakeMovePositionLIst.Count >= snakeBodySize + 1)
             {
-                snakeMovePositionLIst.RemoveAt(snakeMovePositionLIst.Count-1);
+                snakeMovePositionLIst.RemoveAt(snakeMovePositionLIst.Count - 1);
+            }   
+        }
+        for (int i = 0; i < snakeBodyPartsList.Count; i++)
+        {
+            Vector2Int snakeBodyPartGridPosition = snakeBodyPartsList[i].GetGridPosition();
+            if (snakeGridPosition == snakeBodyPartGridPosition)
+            {
+                snakeState = SnakeStates.Dead;
+                Debug.Log("Player is dead.");
             }
-            
         }
         transform.position = new Vector3(snakeGridPosition.x, snakeGridPosition.y);
         transform.eulerAngles = new Vector3(0,0,HandleRotation(gridMoveDirection) - 90f);
