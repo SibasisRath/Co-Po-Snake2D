@@ -19,6 +19,7 @@ public class GameAssetManager : MonoBehaviour
     [SerializeField] private Sprite speedBoostPowerUp;
     [SerializeField] private Sprite scoreBoostPowerUp;
     [SerializeField] private Sprite shildPowerUp;
+    [SerializeField] private Sprite snakeBodyPart;
 
     public Sprite GetSprite(InGameSprites spriteName)
     {
@@ -45,6 +46,9 @@ public class GameAssetManager : MonoBehaviour
                 break;
             case InGameSprites.SpeedBoostPowerUp:
                 resultSprite = speedBoostPowerUp;
+                break;
+            case InGameSprites.SnakeBodySegment:
+                resultSprite = snakeBodyPart;
                 break;
             default:
                 resultSprite = null;
