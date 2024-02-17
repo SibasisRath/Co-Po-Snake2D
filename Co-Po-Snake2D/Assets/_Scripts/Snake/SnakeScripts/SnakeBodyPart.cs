@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class SnakeBodyPart
 {
+    private GameObject snakeBodyGameObject;
     private Transform transform;
     private Vector2Int gridPosition;
 
    public SnakeBodyPart(int bodyIndex)
     {
-        GameObject snakeBodyGameObject = new GameObject("SnakeBody", typeof(SpriteRenderer));
-        snakeBodyGameObject.GetComponent<SpriteRenderer>().sprite = GameAssetManager.instance.GetSprite(InGameSprites.SnakeBodySegment);
+        snakeBodyGameObject = GameAssetManager.instance.GetAssetGameObject(InGameSprites.SnakeBodySegment);  
         snakeBodyGameObject.GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
         transform = snakeBodyGameObject.transform;
     }
@@ -23,4 +23,10 @@ public class SnakeBodyPart
     {
         return this.gridPosition;
     }
+
+    public void DestroyGameObject()
+    {
+        GameObject.Destroy(this.snakeBodyGameObject);
+    }
+
 }
