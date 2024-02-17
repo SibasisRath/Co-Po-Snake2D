@@ -12,7 +12,8 @@ public class Snake : MonoBehaviour
     private LevelGrid levelGrid; // Reference to Grid. This is to interact with consumable
     public void SetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
 
-    private int snakeBodySize; 
+    private int snakeBodySize;
+    private int additionalBodySize;
     private List<Vector2Int> snakeMovePositionLIst; // store the positions of the snake body parts
     private List<SnakeBodyPart> snakeBodyPartsList;
 
@@ -20,6 +21,8 @@ public class Snake : MonoBehaviour
 
 
     public Directions Direction { get => direction; set => direction = value; }
+    public int SnakeBodySize { get => snakeBodySize;}
+    public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
 
     private void Awake()
     {
@@ -77,21 +80,25 @@ public class Snake : MonoBehaviour
         if (timer.CanPerform)
         {
             timer.CanPerform = false;
-            snakeMovePositionLIst.Insert(0, snakeGridPosition);
-            snakeGridPosition += gridMoveDirection;
+            snakeMovePositionLIst.Insert(0, snakeGridPosition);  //This will keep adding snakeHead's new grid postions at the beginning.
+            snakeGridPosition += gridMoveDirection; // this is for changing direction.
+
+            snakeGridPosition = levelGrid.ValidateGridPosition(snakeGridPosition); //This is a part of the screen wrapping feature.
 
             bool snakeAteFood = levelGrid.CheckSnakeAteFood(snakeGridPosition);
 
             if (snakeAteFood)
             {
-                snakeBodySize++;
-                CreateSnakeBody();
-                Debug.Log(snakeBodySize);
+                snakeBodySize += AdditionalBodySize;
+                CreateSnakeBody(AdditionalBodySize);
+                Debug.Log(SnakeBodySize);
             }
-            if (snakeMovePositionLIst.Count >= snakeBodySize + 1)
+            if (snakeMovePositionLIst.Count >= SnakeBodySize + 10)
             {
                 snakeMovePositionLIst.RemoveAt(snakeMovePositionLIst.Count - 1);
-            }   
+            }
+            
+
         }
         for (int i = 0; i < snakeBodyPartsList.Count; i++)
         {
@@ -107,9 +114,22 @@ public class Snake : MonoBehaviour
         UpdateSnakeBody();
     }
 
-    private void CreateSnakeBody()
+    private void CreateSnakeBody(int extraBodyParts)
     {
-        snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count));
+        bool isGrowing = (extraBodyParts > 0) ? true : false;
+
+        for (int i = 0; i < Mathf.Abs(extraBodyParts); i++)
+        {
+            if (isGrowing)
+            {
+                snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count));
+            }
+            else
+            {
+                snakeBodyPartsList[snakeBodyPartsList.Count - 1].DestroyGameObject();           
+                snakeBodyPartsList.RemoveAt(snakeBodyPartsList.Count -1);
+            }   
+        }   
     }
 
     private void UpdateSnakeBody()

@@ -29,10 +29,11 @@ public class LevelGrid
         {
             foodGridPosition = new Vector2Int(GenerateRandomNumber(width), GenerateRandomNumber(height));
         } while (snake.GetSnakePositions().IndexOf(foodGridPosition) != -1);
-        
 
-        foodGameObject = new GameObject("Food", typeof(SpriteRenderer));
-        foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssetManager.instance.GetSprite(InGameSprites.MassGainer1);
+
+        //foodGameObject = new GameObject("Food", typeof(SpriteRenderer));
+        //foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssetManager.instance.GetSprite(InGameSprites.MassGainer1);
+        foodGameObject = GameAssetManager.instance.GetFoodObject(snake.SnakeBodySize);
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
     }
 
@@ -49,9 +50,12 @@ public class LevelGrid
     {
         if (snakePos == foodGridPosition)
         {
+            FoodScript foodScript = foodGameObject.GetComponent<FoodScript>();
+            Debug.Log($"Snake ate food. Body Growth {foodScript.BodyGrow}, Score Added {foodScript.Score}");
+            snake.AdditionalBodySize = foodScript.BodyGrow;
             Object.Destroy(foodGameObject);
             SpawnFood();
-            Debug.Log("Snake ate food.");
+            
             return true;
         }
         else
@@ -59,5 +63,31 @@ public class LevelGrid
             return false;
         }
     }
+
+    public Vector2Int ValidateGridPosition(Vector2Int gridPosition)
+    {
+        if (gridPosition.x<0)
+        {
+            gridPosition.x = width;
+        }
+
+        if (gridPosition.x > width)
+        {
+            gridPosition.x = 0;
+        }
+
+        if (gridPosition.y < 0)
+        {
+            gridPosition.y = height;
+        }
+
+        if (gridPosition.y > height)
+        {
+            gridPosition.y = 0;
+        }
+
+        return gridPosition;
+    }
+
 
 }
