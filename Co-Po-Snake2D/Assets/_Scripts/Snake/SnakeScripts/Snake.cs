@@ -10,6 +10,10 @@ public class Snake : MonoBehaviour
     private Vector2Int gridMoveDirection; // This will help to change direction
     private Directions direction; // this will be the all the allowed direction
     private LevelGrid levelGrid; // Reference to Grid. This is to interact with consumable
+    [SerializeField] private PlayerScore playerScore;
+
+    private FoodScript foodScript;
+
     public void SetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
 
     private int snakeBodySize;
@@ -22,7 +26,7 @@ public class Snake : MonoBehaviour
 
     public Directions Direction { get => direction; set => direction = value; }
     public int SnakeBodySize { get => snakeBodySize;}
-    public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
+    //public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
 
     private void Awake()
     {
@@ -85,12 +89,13 @@ public class Snake : MonoBehaviour
 
             snakeGridPosition = levelGrid.ValidateGridPosition(snakeGridPosition); //This is a part of the screen wrapping feature.
 
-            bool snakeAteFood = levelGrid.CheckSnakeAteFood(snakeGridPosition);
+            bool snakeAteFood = levelGrid.CheckSnakeAteFood(snakeGridPosition, out foodScript);
 
             if (snakeAteFood)
             {
-                snakeBodySize += AdditionalBodySize;
-                CreateSnakeBody(AdditionalBodySize);
+                snakeBodySize += foodScript.BodyGrow;
+                playerScore.UpdateScore(foodScript.Score);
+                CreateSnakeBody(foodScript.BodyGrow);
                 Debug.Log(SnakeBodySize);
             }
             if (snakeMovePositionLIst.Count >= SnakeBodySize + 10)
