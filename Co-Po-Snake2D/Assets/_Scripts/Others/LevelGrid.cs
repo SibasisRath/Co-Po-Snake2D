@@ -17,7 +17,7 @@ public class LevelGrid
         this.unitGrid = unitGrid;   
     }
 
-    public void SetUp(Snake snake)
+    public void SnakeSetUp(Snake snake)
     {
         this.snake = snake;
         SpawnFood();

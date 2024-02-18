@@ -14,7 +14,7 @@ public class Snake : MonoBehaviour
 
     private FoodScript foodScript;
 
-    public void SetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
+    public void LevelGridSetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
 
     private int snakeBodySize;
     private int additionalBodySize;
@@ -112,6 +112,7 @@ public class Snake : MonoBehaviour
             {
                 snakeState = SnakeStates.Dead;
                 Debug.Log("Player is dead.");
+                GameHandler.State = GameStates.GameOver;
             }
         }
         transform.position = new Vector3(snakeGridPosition.x, snakeGridPosition.y);
