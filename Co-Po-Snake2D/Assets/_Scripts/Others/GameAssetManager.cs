@@ -86,13 +86,13 @@ public class GameAssetManager : MonoBehaviour
                     foodObject = GetAssetGameObject(InGameSprites.MassBurner1);
                     break;
                 case 1:
-                    foodObject = GetAssetGameObject(InGameSprites.MassBurner1);
+                    foodObject = GetAssetGameObject(InGameSprites.MassBurner2);
                     break;
                 case 2:
-                    foodObject = GetAssetGameObject(InGameSprites.MassBurner1);
+                    foodObject = GetAssetGameObject(InGameSprites.MassGainer1);
                     break;
                 case 3:
-                    foodObject = GetAssetGameObject(InGameSprites.MassBurner1);
+                    foodObject = GetAssetGameObject(InGameSprites.MassGainer2);
                     break;
                 default:
                     foodObject = null;
