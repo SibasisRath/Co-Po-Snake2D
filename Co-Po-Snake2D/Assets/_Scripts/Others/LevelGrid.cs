@@ -46,13 +46,13 @@ public class LevelGrid
         return (int)(Random.Range(0,adjustedMax+1))*unitGrid;
     }
 
-    public bool CheckSnakeAteFood(Vector2Int snakePos)
+    public bool CheckSnakeAteFood(Vector2Int snakePos, out FoodScript foodScript)
     {
         if (snakePos == foodGridPosition)
         {
-            FoodScript foodScript = foodGameObject.GetComponent<FoodScript>();
+            foodScript = foodGameObject.GetComponent<FoodScript>();
             Debug.Log($"Snake ate food. Body Growth {foodScript.BodyGrow}, Score Added {foodScript.Score}");
-            snake.AdditionalBodySize = foodScript.BodyGrow;
+            //snake.AdditionalBodySize = foodScript.BodyGrow;
             Object.Destroy(foodGameObject);
             SpawnFood();
             
@@ -60,6 +60,7 @@ public class LevelGrid
         }
         else
         {
+            foodScript = null;
             return false;
         }
     }
