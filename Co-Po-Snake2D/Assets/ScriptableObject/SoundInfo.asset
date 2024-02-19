@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e92b5399e5a4c4989333ddb8a953e8, type: 3}
   m_Name: SoundInfo
   m_EditorClassIdentifier: 
-  backGroundSound: 0
-  soundEffect: 0
+  backGroundSound: 0.5
+  soundEffect: 0.5
