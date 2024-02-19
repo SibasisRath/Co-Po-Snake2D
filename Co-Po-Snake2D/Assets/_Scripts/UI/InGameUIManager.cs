@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using System;
 using TMPro;
 
-public class UiManager : MonoBehaviour
+public class InGameUIManager : MonoBehaviour
 {
     //[SerializeField] private GameHandler gameHandler;
     [Space]
