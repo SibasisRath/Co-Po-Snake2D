@@ -20,9 +20,27 @@ public class FoodScript : MonoBehaviour
         StartCoroutine(FoodLifeTime());
     }
 
+    
+
     private IEnumerator FoodLifeTime()
     {
-        yield return new WaitForSeconds(foodLifeTime);
-        consumableState = ConsumableStates.Rotten;
+        /* yield return new WaitForSeconds(foodLifeTime);
+         consumableState = ConsumableStates.Rotten;*/
+
+        float elapsedTime = 0f; // Track the elapsed time when paused
+
+        while (elapsedTime < foodLifeTime)
+        {
+            if (GameHandler.State != GameStates.Pause) // Only count time if not paused
+            { 
+                elapsedTime += Time.deltaTime; 
+            }
+
+            yield return null; // Yield each frame
+        }
+
+        // If not in pause state when time is up, set state to Rotten
+        if (GameHandler.State != GameStates.Pause)
+            consumableState = ConsumableStates.Rotten;
     }
 }

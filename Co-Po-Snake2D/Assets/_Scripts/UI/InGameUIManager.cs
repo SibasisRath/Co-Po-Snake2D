@@ -61,12 +61,12 @@ public class InGameUIManager : MonoBehaviour
 
     private void RestartButtonClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManagerScript.Instance.SceneLoading(ScenesEnum.GameScene);
     }
 
     private void BackToMainButtonClicked()
     {
-        SceneManager.LoadScene(0);
+        SceneManagerScript.Instance.SceneLoading(ScenesEnum.MainScene);
     }
 
 

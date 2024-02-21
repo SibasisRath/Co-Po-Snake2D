@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: foodName
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5503876710584709571, guid: d131ec7eecb058e4bafa64e65c666ebb, type: 3}
+      propertyPath: foodLifeTime
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7072697397522473755, guid: d131ec7eecb058e4bafa64e65c666ebb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

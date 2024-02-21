@@ -59,10 +59,12 @@ public class GameModeSelectorUIManager : MonoBehaviour
     private void SingleModeButtonIsClicked()
     {
         modeManager.GameMode = GameModes.SinglePlayer;
+        SceneManagerScript.Instance.SceneLoading(ScenesEnum.GameScene);
     }
 
     private void CopoModeButtonIsClicked()
     {
         modeManager.GameMode = GameModes.CopoPlayer;
+        SceneManagerScript.Instance.SceneLoading(ScenesEnum.GameScene);
     }
 }
