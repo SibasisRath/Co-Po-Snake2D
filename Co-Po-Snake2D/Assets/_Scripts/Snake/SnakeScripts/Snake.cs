@@ -27,8 +27,9 @@ public class Snake : MonoBehaviour
 
     //powerups activation variables
     private bool canDie;
-   private int speedMultiplier = 1;
+    private int speedMultiplier = 1;
     private int foodScoreMultplier = 1;
+    float defaultSpeed;
 
 
     public Directions Direction { get => direction; set => direction = value; }
@@ -44,6 +45,7 @@ public class Snake : MonoBehaviour
         snakeBodySize = 0;
         snakeMovePositionLIst = new List<Vector2Int>();
         snakeBodyPartsList = new List<SnakeBodyPart>();
+        defaultSpeed = timer.Speed;
     }
 
     private void Start()
@@ -195,7 +197,6 @@ public class Snake : MonoBehaviour
     private IEnumerator PowerUpTime(GameObject powerUp)
     {
         Debug.Log("entered power Up coroutine");
-        float defaultSpeed = timer.Speed;
         GameObject activePowerUp = powerUp;
         PowerUpScript powerScript = activePowerUp.GetComponent<PowerUpScript>();
         InGameSprites powersprite = powerScript.PowerUpSprite;
