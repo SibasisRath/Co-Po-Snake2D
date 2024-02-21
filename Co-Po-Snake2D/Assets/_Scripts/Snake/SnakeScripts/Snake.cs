@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    [SerializeField] private PlayerEnum player;
+
     [SerializeField] private Timer timer; // Reference to timer
     [SerializeField] private Vector2Int snakeGridPosition; //Snake position on grid
     [SerializeField] private int gridUnit; // This is the length snake will move each time
@@ -36,6 +38,7 @@ public class Snake : MonoBehaviour
     public int SnakeBodySize { get => snakeBodySize;}
     public SnakeStates SnakeState { get => snakeState; set => snakeState = value; }
     public bool CanDie { get => canDie; set => canDie = value; }
+    public PlayerEnum Player { get => player;}
 
     //public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
 
@@ -157,7 +160,7 @@ public class Snake : MonoBehaviour
         {
             if (isGrowing)
             {
-                snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count));
+                snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count, player));
             }
             else
             {

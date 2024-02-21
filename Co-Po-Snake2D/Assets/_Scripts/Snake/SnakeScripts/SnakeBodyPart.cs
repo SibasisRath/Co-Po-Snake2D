@@ -6,9 +6,17 @@ public class SnakeBodyPart
     private Transform transform;
     private Vector2Int gridPosition;
 
-   public SnakeBodyPart(int bodyIndex)
+   public SnakeBodyPart(int bodyIndex, PlayerEnum player)
     {
-        snakeBodyGameObject = GameAssetManager.instance.GetAssetGameObject(InGameSprites.SnakeBodySegment);  
+        if (player == PlayerEnum.Player1)
+        {
+            snakeBodyGameObject = GameAssetManager.instance.GetAssetGameObject(InGameSprites.SnakeBodySegment1);
+        }
+        if (player == PlayerEnum.Player2)
+        {
+            snakeBodyGameObject = GameAssetManager.instance.GetAssetGameObject(InGameSprites.SnakeBodySegment2);
+        }
+
         snakeBodyGameObject.GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
         transform = snakeBodyGameObject.transform;
     }

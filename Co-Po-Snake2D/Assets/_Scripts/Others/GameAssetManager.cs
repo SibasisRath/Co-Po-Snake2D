@@ -56,8 +56,11 @@ public class GameAssetManager : MonoBehaviour
             case InGameSprites.SpeedBoostPowerUp:
                 resultObject = Instantiate(speedBoostPowerUp);
                 break;
-            case InGameSprites.SnakeBodySegment:
+            case InGameSprites.SnakeBodySegment1:
                 resultObject = Instantiate(snakeBodyPart1);
+                break;
+            case InGameSprites.SnakeBodySegment2:
+                resultObject = Instantiate(snakeBodyPart2);
                 break;
             default:
                 resultObject = null;
