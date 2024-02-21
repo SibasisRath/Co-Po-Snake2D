@@ -13,19 +13,29 @@ public class Snake : MonoBehaviour
     [SerializeField] private PlayerScore playerScore;
 
     private FoodScript foodScript;
+    private GameObject powerUp;
 
     public void LevelGridSetUp(LevelGrid levelGrid){this.levelGrid = levelGrid;}
 
     private int snakeBodySize;
-    private int additionalBodySize;
     private List<Vector2Int> snakeMovePositionLIst; // store the positions of the snake body parts
     private List<SnakeBodyPart> snakeBodyPartsList;
 
     private SnakeStates snakeState;
+    private bool isPaused;
+    private bool isDead;
+
+    //powerups activation variables
+    private bool canDie;
+   private int speedMultiplier = 1;
+    private int foodScoreMultplier = 1;
 
 
     public Directions Direction { get => direction; set => direction = value; }
     public int SnakeBodySize { get => snakeBodySize;}
+    public SnakeStates SnakeState { get => snakeState; set => snakeState = value; }
+    public bool CanDie { get => canDie; set => canDie = value; }
+
     //public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
 
     private void Awake()
@@ -38,20 +48,31 @@ public class Snake : MonoBehaviour
 
     private void Start()
     {
-        snakeState = SnakeStates.Alive;
+        SnakeState = SnakeStates.Alive;
+        isPaused = false;
+        isDead = false;
+        CanDie = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        switch (snakeState)
+
+        if (SnakeState == SnakeStates.Alive)
         {
-            case SnakeStates.Alive:
-                HandelDirection();
-                HandleMovement();
-                break;
-            case SnakeStates.Dead:
-                break;
+            HandelDirection();
+            HandleMovement();
+        }
+        else if (SnakeState == SnakeStates.Stoped && isPaused == false )
+        {
+            isPaused = true;
+            Debug.Log("gamePaused.");
+        }
+        else if (snakeState == SnakeStates.Dead && isDead == false)
+        {
+            isDead = true;
+            Debug.Log("Player is dead.");
+            GameHandler.State = GameStates.GameOver;
         }
     }
 
@@ -94,9 +115,15 @@ public class Snake : MonoBehaviour
             if (snakeAteFood)
             {
                 snakeBodySize += foodScript.BodyGrow;
-                playerScore.UpdateScore(foodScript.Score);
+                playerScore.UpdateScore(foodScript.Score * foodScoreMultplier);
                 CreateSnakeBody(foodScript.BodyGrow);
                 Debug.Log(SnakeBodySize);
+            }
+
+            bool snakeAtePowerUp = levelGrid.CheckSnakeAtePowerUp(snakeGridPosition, out powerUp);
+            if (snakeAtePowerUp)
+            {
+                StartCoroutine(PowerUpTime(powerUp));
             }
             if (snakeMovePositionLIst.Count >= SnakeBodySize + 10)
             {
@@ -108,9 +135,9 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < snakeBodyPartsList.Count; i++)
         {
             Vector2Int snakeBodyPartGridPosition = snakeBodyPartsList[i].GetGridPosition();
-            if (snakeGridPosition == snakeBodyPartGridPosition)
+            if (snakeGridPosition == snakeBodyPartGridPosition && CanDie)
             {
-                snakeState = SnakeStates.Dead;
+                SnakeState = SnakeStates.Dead;
                 Debug.Log("Player is dead.");
                 GameHandler.State = GameStates.GameOver;
             }
@@ -163,5 +190,35 @@ public class Snake : MonoBehaviour
         List<Vector2Int> entireSnake = new List<Vector2Int>() { snakeGridPosition };
         entireSnake.AddRange(snakeMovePositionLIst);
         return entireSnake;
+    }
+
+    private IEnumerator PowerUpTime(GameObject powerUp)
+    {
+        Debug.Log("entered power Up coroutine");
+        float defaultSpeed = timer.Speed;
+        GameObject activePowerUp = powerUp;
+        PowerUpScript powerScript = activePowerUp.GetComponent<PowerUpScript>();
+        InGameSprites powersprite = powerScript.PowerUpSprite;
+
+        switch (powersprite)
+        {
+            case InGameSprites.ScoreBoostPowerUp:
+                foodScoreMultplier = 2;
+                break;
+            case InGameSprites.ShieldPowerUp:
+                CanDie = false;
+                break;
+            case InGameSprites.SpeedBoostPowerUp:
+                speedMultiplier = 2;
+                timer.Speed *= speedMultiplier;
+                break;
+            default:
+                break;
+        }
+        yield return new WaitForSeconds(powerScript.EffectiveTime);
+        foodScoreMultplier = 1;
+        CanDie = true;
+        timer.Speed = defaultSpeed;
+        
     }
 }

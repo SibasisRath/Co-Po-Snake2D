@@ -48,13 +48,13 @@ public class GameAssetManager : MonoBehaviour
                 resultObject = Instantiate(massBurner2);
                 break;
             case InGameSprites.ScoreBoostPowerUp:
-                resultObject = scoreBoostPowerUp;
+                resultObject = Instantiate(scoreBoostPowerUp);
                 break;
             case InGameSprites.ShieldPowerUp:
-                resultObject = shildPowerUp;
+                resultObject = Instantiate(shildPowerUp);
                 break;
             case InGameSprites.SpeedBoostPowerUp:
-                resultObject = speedBoostPowerUp;
+                resultObject = Instantiate(speedBoostPowerUp);
                 break;
             case InGameSprites.SnakeBodySegment:
                 resultObject = Instantiate(snakeBodyPart1);
@@ -105,4 +105,26 @@ public class GameAssetManager : MonoBehaviour
         return foodObject;
     }
 
+    public GameObject GetPowerUp()
+    {
+        GameObject powerUp;
+        int randomNumber = Random.Range(0, 3);
+        switch (randomNumber)
+        {
+            case 0:
+                powerUp = GetAssetGameObject(InGameSprites.ScoreBoostPowerUp);
+                break;
+            case 1:
+                powerUp = GetAssetGameObject(InGameSprites.ShieldPowerUp);
+                break;
+            case 2:
+                powerUp = GetAssetGameObject(InGameSprites.SpeedBoostPowerUp);
+                break;
+            default:
+                powerUp = null;
+                Debug.Log("no such power up available.");
+                break;
+        }
+        return powerUp;
+    }
 }
