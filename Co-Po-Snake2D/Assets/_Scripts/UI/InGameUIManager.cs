@@ -34,15 +34,6 @@ public class InGameUIManager : MonoBehaviour
     {
         if (GameHandler.State == GameStates.Pause)
         {
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Time.timeScale = 1;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
             OnPause();
         }
 

@@ -1,4 +1,4 @@
 public enum SnakeStates
 {
-    Alive,Dead
+    Alive, Stoped, Dead
 }

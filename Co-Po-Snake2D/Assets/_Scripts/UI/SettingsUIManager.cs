@@ -23,11 +23,17 @@ public class SettingsUIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // sound slider SetUp
+        backGroundSoundSlider.gameObject.SetActive(true);
+        soundEffectSlider.gameObject.SetActive(true);
         backGroundSoundSlider.value = soundInfo.BackGroundSound;
         soundEffectSlider.value = soundInfo.SoundEffect;
+
+        // panel management
         mainPanel.SetActive(false);
         howToPlayPanel.SetActive(false);
 
+        //button setup
         SetUpButton(backToMainButton, BackToMainButtonClicked);
         SetUpButton(howToPlayButton, HowToPlayButtonClicked);
     }

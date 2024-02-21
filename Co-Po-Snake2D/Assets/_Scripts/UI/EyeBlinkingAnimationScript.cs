@@ -7,16 +7,18 @@ public class EyeBlinkingAnimationScript : MonoBehaviour
     [SerializeField] private GameObject rightEye;
 
     private bool isBlinking = false;
-    private const float initialDelay = 1f;
-    private const float minDelay = 2f;
-    private const float maxDelay = 4f;
-    private const int minBlinks = 1;
-    private const int maxBlinks = 2;
+    [SerializeField] private float minDelay = 1f;
+    [SerializeField] private float maxDelay = 2f;
+    [SerializeField] private int minBlinks = 1;
+    [SerializeField] private int maxBlinks = 2;
+
+    private Coroutine blinkCoroutine;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(EyeBlinkingCoroutine());
+        //this is because if I am deactivating and re-activating the game object. the coroutine does not resume. 
+        blinkCoroutine = StartCoroutine(EyeBlinkingCoroutine());
     }
 
     private IEnumerator EyeBlinkingCoroutine()
@@ -55,5 +57,22 @@ public class EyeBlinkingAnimationScript : MonoBehaviour
         // Toggle the state of the eye game objects
         leftEye.SetActive(!isBlinking);
         rightEye.SetActive(!isBlinking);
+    }
+
+    private void OnEnable()
+    {
+        if(blinkCoroutine == null)
+        {
+            blinkCoroutine = StartCoroutine(EyeBlinkingCoroutine());
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(EyeBlinkingCoroutine());
+            blinkCoroutine = null;
+        }
     }
 }

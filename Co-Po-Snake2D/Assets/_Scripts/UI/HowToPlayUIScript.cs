@@ -24,6 +24,9 @@ public class HowToPlayUIScript : MonoBehaviour
         UpdateInstructionSlides();
         settingsPanel.SetActive(false);
         
+        leftButton.gameObject.SetActive(true);
+        rightButton.gameObject.SetActive(true);
+        backButton.gameObject.SetActive(true);
 
         SetUpButton(leftButton,LeftButtonClicked);
         SetUpButton(rightButton, RightButtonClicked);

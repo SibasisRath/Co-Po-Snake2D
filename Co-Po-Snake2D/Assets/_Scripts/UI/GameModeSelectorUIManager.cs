@@ -21,6 +21,11 @@ public class GameModeSelectorUIManager : MonoBehaviour
     void Start()
     {
         mainPanel.SetActive(false);
+
+        backToMainButton.gameObject.SetActive(true);
+        singleModeButton.gameObject.SetActive(true);
+        copoModeButton.gameObject.SetActive(true);
+
         SetUpButton(backToMainButton, BackToMainButtonIsClicked);
         SetUpButton(singleModeButton, SingleModeButtonIsClicked);
         SetUpButton(copoModeButton, CopoModeButtonIsClicked);

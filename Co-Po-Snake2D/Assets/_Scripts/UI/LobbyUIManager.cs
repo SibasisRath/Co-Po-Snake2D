@@ -23,6 +23,10 @@ public class LobbyUIManager : MonoBehaviour
         playModeSelectorPannel.SetActive(false);
         settingsPannel.SetActive(false);
 
+        playButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
+        settingsButton.gameObject.SetActive(true);
+
         SetUpButton(playButton, PlayButtonClicked);
         SetUpButton(settingsButton, SettingsButtonClicked);
         SetUpButton(quitButton, QuitButtonClicked);
