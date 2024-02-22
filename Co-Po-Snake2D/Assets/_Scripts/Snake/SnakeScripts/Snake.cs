@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    [SerializeField] private PlayerEnum player;
+
     [SerializeField] private Timer timer; // Reference to timer
     [SerializeField] private Vector2Int snakeGridPosition; //Snake position on grid
     [SerializeField] private int gridUnit; // This is the length snake will move each time
@@ -22,21 +25,19 @@ public class Snake : MonoBehaviour
     private List<SnakeBodyPart> snakeBodyPartsList;
 
     private SnakeStates snakeState;
-    private bool isPaused;
-    private bool isDead;
 
     //powerups activation variables
     private bool canDie;
-   private int speedMultiplier = 1;
+    private int speedMultiplier = 1;
     private int foodScoreMultplier = 1;
+    float defaultSpeed;
 
 
     public Directions Direction { get => direction; set => direction = value; }
     public int SnakeBodySize { get => snakeBodySize;}
     public SnakeStates SnakeState { get => snakeState; set => snakeState = value; }
     public bool CanDie { get => canDie; set => canDie = value; }
-
-    //public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
+    public PlayerEnum Player { get => player;}
 
     private void Awake()
     {
@@ -44,35 +45,22 @@ public class Snake : MonoBehaviour
         snakeBodySize = 0;
         snakeMovePositionLIst = new List<Vector2Int>();
         snakeBodyPartsList = new List<SnakeBodyPart>();
+        defaultSpeed = timer.Speed;
     }
 
     private void Start()
     {
         SnakeState = SnakeStates.Alive;
-        isPaused = false;
-        isDead = false;
         CanDie = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (SnakeState == SnakeStates.Alive)
+        if ((GameHandler.State == GameStates.Start || GameHandler.State == GameStates.Resume) && SnakeState == SnakeStates.Alive)
         {
             HandelDirection();
             HandleMovement();
-        }
-        else if (SnakeState == SnakeStates.Stoped && isPaused == false )
-        {
-            isPaused = true;
-            Debug.Log("gamePaused.");
-        }
-        else if (snakeState == SnakeStates.Dead && isDead == false)
-        {
-            isDead = true;
-            Debug.Log("Player is dead.");
-            GameHandler.State = GameStates.GameOver;
         }
     }
 
@@ -129,17 +117,17 @@ public class Snake : MonoBehaviour
             {
                 snakeMovePositionLIst.RemoveAt(snakeMovePositionLIst.Count - 1);
             }
-            
 
-        }
-        for (int i = 0; i < snakeBodyPartsList.Count; i++)
-        {
-            Vector2Int snakeBodyPartGridPosition = snakeBodyPartsList[i].GetGridPosition();
-            if (snakeGridPosition == snakeBodyPartGridPosition && CanDie)
+            if (CanDie)
             {
-                SnakeState = SnakeStates.Dead;
-                Debug.Log("Player is dead.");
-                GameHandler.State = GameStates.GameOver;
+                (bool, bool) deathVarification = levelGrid.SnakeDeathCheck(snakeGridPosition, player);
+                if (deathVarification.Item1)
+                {
+                    SnakeState = SnakeStates.Dead;
+                    Debug.Log($"{player} is dead.");
+                    GameHandler.GameResult = (deathVarification.Item2, player);
+                    GameHandler.State = GameStates.GameOver;
+                }
             }
         }
         transform.position = new Vector3(snakeGridPosition.x, snakeGridPosition.y);
@@ -155,7 +143,7 @@ public class Snake : MonoBehaviour
         {
             if (isGrowing)
             {
-                snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count));
+                snakeBodyPartsList.Add(new SnakeBodyPart(snakeBodyPartsList.Count, player));
             }
             else
             {
@@ -192,10 +180,16 @@ public class Snake : MonoBehaviour
         return entireSnake;
     }
 
+    public List<Vector2Int> GetSnakeBodyPositions()
+    {
+        List<Vector2Int> entireSnake = new List<Vector2Int>();
+        entireSnake.AddRange(snakeBodyPartsList.Select<SnakeBodyPart, Vector2Int>(go => go.GetGridPosition()).ToList());
+        return entireSnake;
+    }
+
     private IEnumerator PowerUpTime(GameObject powerUp)
     {
         Debug.Log("entered power Up coroutine");
-        float defaultSpeed = timer.Speed;
         GameObject activePowerUp = powerUp;
         PowerUpScript powerScript = activePowerUp.GetComponent<PowerUpScript>();
         InGameSprites powersprite = powerScript.PowerUpSprite;

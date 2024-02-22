@@ -3,6 +3,5 @@ public enum GameStates
     Start,
     GameOver,
     Pause,
-    Resume,
-    End
+    Resume
 }

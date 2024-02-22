@@ -12,7 +12,8 @@ public class InGameUIManager : MonoBehaviour
     //[SerializeField] private GameHandler gameHandler;
     [Space]
     [SerializeField] private GameObject panel;
-    [SerializeField] private TextMeshProUGUI message;
+    [SerializeField] private TextMeshProUGUI mainMessage;
+    [SerializeField] private TextMeshProUGUI description;
     [SerializeField] private Button mainButton;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button resumeButton;
@@ -21,7 +22,8 @@ public class InGameUIManager : MonoBehaviour
     {
         //gameHandler.State = GameStates.Start;
         panel.SetActive(false);
-        message.gameObject.SetActive(false);
+        mainMessage.gameObject.SetActive(false);
+        description.gameObject.SetActive(false);
         SetUpButton(mainButton, BackToMainButtonClicked);
         SetUpButton(restartButton, RestartButtonClicked);
         SetUpButton(resumeButton, ResumeButtonClicked);
@@ -74,7 +76,7 @@ public class InGameUIManager : MonoBehaviour
     {
         GameHandler.State = GameStates.Resume;
         panel.SetActive(false);
-        message.gameObject.SetActive(false);
+        mainMessage.gameObject.SetActive(false);
         mainButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
         resumeButton.gameObject.SetActive(false);
@@ -84,8 +86,8 @@ public class InGameUIManager : MonoBehaviour
     {
         GameHandler.State = GameStates.Pause;
         panel.SetActive(true);
-        message.gameObject.SetActive(true);
-        message.text = "Pause";
+        mainMessage.gameObject.SetActive(true);
+        mainMessage.text = "Pause";
         mainButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
         resumeButton.gameObject.SetActive(true);
@@ -93,10 +95,22 @@ public class InGameUIManager : MonoBehaviour
 
     private void OnGameOver()
     {
-        GameHandler.State = GameStates.End;
+        //GameHandler.State = GameStates.End;
         panel.SetActive(true);
-        message.gameObject.SetActive(true);
-        message.text = "GameOver";
+        mainMessage.gameObject.SetActive(true);
+        mainMessage.text = "GameOver";
+        description.gameObject.SetActive(true);
+
+
+
+        if (GameHandler.GameResult.Item1)
+        {
+            description.text = GameHandler.GameResult.Item2 + " please do not kill yourself.";
+        }
+        else
+        {
+            description.text = GameHandler.GameResult.Item2 + " Congratulation.";
+        }
         mainButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
     }

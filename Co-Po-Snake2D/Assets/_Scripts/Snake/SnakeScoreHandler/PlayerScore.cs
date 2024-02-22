@@ -25,7 +25,6 @@ public class PlayerScore : MonoBehaviour
 
     private void UpdateUI()
     {
-        playerScore.text = "Player 1 Score\n" + score;
+        playerScore.text = "Player Score\n" + score;
     }
-
 }

@@ -4,16 +4,32 @@ using UnityEngine;
 
 public class GameHandler : MonoBehaviour
 {
+    private const float minFoodSpawnInterval = 5f;
+    private const float maxFoodSpawnInterval = 10f;
+    private const float minPowerUpSpawnInterval = 7f;
+    private const float maxPowerUpSpawnInterval = 10f;
     private static GameHandler instance;
 
     private static GameStates state;
+    private static GameModes mode;
+    [SerializeField] private GameModeManager modeManager;
     [SerializeField] private Snake snakeReferenceOne;
+    [SerializeField] private Snake snakeReferenceTwo;
     private LevelGrid levelGrid;
 
-    private const float powerUpLifeTime = 3; //given in the instruction
+    private static (bool, PlayerEnum) gameResult;
 
     public static GameStates State { get => state; set => state = value; }
+    public static GameModes Mode { get => mode; private set => mode = value; }
+    public static (bool, PlayerEnum) GameResult { get => gameResult; set => gameResult = value; }
+    public static GameHandler Instance { get => instance; set => instance = value; }
 
+
+    private void Awake()
+    {
+        Mode = modeManager.GameMode;
+        Debug.Log(Mode);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +39,22 @@ public class GameHandler : MonoBehaviour
 
         levelGrid = new LevelGrid(200,200, 10);
 
+       
+
         snakeReferenceOne.LevelGridSetUp(levelGrid);
         levelGrid.SnakeSetUp(snakeReferenceOne);
+
+        if (Mode == GameModes.SinglePlayer)
+        {
+            snakeReferenceTwo.gameObject.SetActive(false);
+        }
+        else if (Mode == GameModes.CopoPlayer)
+        {
+            snakeReferenceTwo.gameObject.SetActive(true);
+            snakeReferenceTwo.LevelGridSetUp(levelGrid);
+            levelGrid.SnakeSetUp(snakeReferenceTwo);
+        }
+
 
         levelGrid.SpawnFood();
         levelGrid.SpawnPowerUps();
@@ -37,7 +67,7 @@ public class GameHandler : MonoBehaviour
         while (true)
         {
             // Wait for a random interval before attempting to spawn food
-            float randomInterval = Random.Range(5f, 10f);
+            float randomInterval = Random.Range(minFoodSpawnInterval, maxFoodSpawnInterval);
             yield return new WaitForSeconds(randomInterval);
 
             // Check if the game is not paused before spawning food
@@ -53,7 +83,7 @@ public class GameHandler : MonoBehaviour
         while (true)
         {
             // Wait for a random interval before attempting to spawn food
-            float randomInterval = Random.Range(7f, 10f);
+            float randomInterval = Random.Range(minPowerUpSpawnInterval, maxPowerUpSpawnInterval);
             yield return new WaitForSeconds(randomInterval);
 
             // Check if the game is not paused before spawning food
@@ -67,17 +97,11 @@ public class GameHandler : MonoBehaviour
     private void Update()
     {
 
-        if (State != GameStates.Pause & Input.GetKeyDown(KeyCode.P))//visual instruction is given in the game.
+        if (State != GameStates.Pause & Input.GetKeyDown(KeyCode.P)) // visual instruction is given in the game.
         {
             State = GameStates.Pause;
-            snakeReferenceOne.SnakeState = SnakeStates.Stoped;
-        }
-        else if (State == GameStates.Resume)
-        {
-            snakeReferenceOne.SnakeState = SnakeStates.Alive;
         }
 
         levelGrid.DestroyFood();
-
     }
 }
