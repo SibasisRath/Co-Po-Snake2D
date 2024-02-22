@@ -29,3 +29,11 @@ Scoring:
 UI:
 1. Implement Basic UI like death, Win, Score, Lobby UI for the game.
 2. Implement Pause/Resume, Restart and Quit Buttons.
+
+
+
+
+
+https://github.com/SibasisRath/Co-Po-Snake2D/assets/57254317/ea0c168c-7c78-4a5c-bb1b-c2493dd2c2be
+
+
