@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
@@ -24,8 +25,6 @@ public class Snake : MonoBehaviour
     private List<SnakeBodyPart> snakeBodyPartsList;
 
     private SnakeStates snakeState;
-    private bool isPaused;
-    private bool isDead;
 
     //powerups activation variables
     private bool canDie;
@@ -54,8 +53,6 @@ public class Snake : MonoBehaviour
     private void Start()
     {
         SnakeState = SnakeStates.Alive;
-        isPaused = false;
-        isDead = false;
         CanDie = true;
     }
 
@@ -63,22 +60,28 @@ public class Snake : MonoBehaviour
     void Update()
     {
 
-        if (SnakeState == SnakeStates.Alive)
+        if ((GameHandler.State == GameStates.Start || GameHandler.State == GameStates.Resume) && SnakeState == SnakeStates.Alive)
         {
             HandelDirection();
             HandleMovement();
         }
-        else if (SnakeState == SnakeStates.Stoped && isPaused == false )
+
+       /* else if (GameHandler.State == GameStates.Pause && isPaused == false)
         {
             isPaused = true;
             Debug.Log("gamePaused.");
-        }
-        else if (snakeState == SnakeStates.Dead && isDead == false)
+        }*/
+       /* else if (SnakeState == SnakeStates.Stoped && isPaused == false)
+        {
+            isPaused = true;
+            Debug.Log("gamePaused.");
+        }*/
+        /*else if (snakeState == SnakeStates.Dead && isDead == false)
         {
             isDead = true;
             Debug.Log("Player is dead.");
             GameHandler.State = GameStates.GameOver;
-        }
+        }*/
     }
 
     private void HandelDirection()
@@ -120,7 +123,7 @@ public class Snake : MonoBehaviour
             if (snakeAteFood)
             {
                 snakeBodySize += foodScript.BodyGrow;
-                playerScore.UpdateScore(foodScript.Score * foodScoreMultplier);
+                playerScore.UpdateScore(foodScript.Score * foodScoreMultplier, player);
                 CreateSnakeBody(foodScript.BodyGrow);
                 Debug.Log(SnakeBodySize);
             }
@@ -134,10 +137,22 @@ public class Snake : MonoBehaviour
             {
                 snakeMovePositionLIst.RemoveAt(snakeMovePositionLIst.Count - 1);
             }
+
+            if (CanDie)
+            {
+                (bool, bool) deathVarification = levelGrid.SnakeDeathCheck(snakeGridPosition, player);
+                if (deathVarification.Item1)
+                {
+                    SnakeState = SnakeStates.Dead;
+                    Debug.Log($"{player} is dead.");
+                    GameHandler.GameResult = (deathVarification.Item2, player);
+                    GameHandler.State = GameStates.GameOver;
+                }
+            }
             
 
         }
-        for (int i = 0; i < snakeBodyPartsList.Count; i++)
+       /* for (int i = 0; i < snakeBodyPartsList.Count; i++)
         {
             Vector2Int snakeBodyPartGridPosition = snakeBodyPartsList[i].GetGridPosition();
             if (snakeGridPosition == snakeBodyPartGridPosition && CanDie)
@@ -146,7 +161,7 @@ public class Snake : MonoBehaviour
                 Debug.Log("Player is dead.");
                 GameHandler.State = GameStates.GameOver;
             }
-        }
+        }*/
         transform.position = new Vector3(snakeGridPosition.x, snakeGridPosition.y);
         transform.eulerAngles = new Vector3(0,0,HandleRotation(gridMoveDirection) - 90f);
         UpdateSnakeBody();
@@ -194,6 +209,13 @@ public class Snake : MonoBehaviour
     {
         List<Vector2Int> entireSnake = new List<Vector2Int>() { snakeGridPosition };
         entireSnake.AddRange(snakeMovePositionLIst);
+        return entireSnake;
+    }
+
+    public List<Vector2Int> GetSnakeBodyPositions()
+    {
+        List<Vector2Int> entireSnake = new List<Vector2Int>();
+        entireSnake.AddRange(snakeBodyPartsList.Select<SnakeBodyPart, Vector2Int>(go => go.GetGridPosition()).ToList());
         return entireSnake;
     }
 

@@ -15,7 +15,8 @@ public class LevelGrid
     private List<GameObject> foodGameObjects = new List<GameObject>();
     private List<GameObject> powerUpsGameObjects = new List<GameObject>();
 
-    private Snake snake;
+   // private Snake snake; //this will be deleted
+    private List<Snake> snakes = new List<Snake>();
 
     public LevelGrid(int width, int height, int unitGrid)
     {
@@ -26,7 +27,8 @@ public class LevelGrid
 
     public void SnakeSetUp(Snake snake)
     {
-        this.snake = snake;
+        this.snakes.Add(snake);
+       // this.snake = snake;
     }
 
 
@@ -44,7 +46,7 @@ public class LevelGrid
         do
         {
             consumablesGridPosition = new Vector2Int(GenerateRandomNumber(width), GenerateRandomNumber(height));
-        } while (snake.GetSnakePositions().IndexOf(consumablesGridPosition) != -1 && foodGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1 && powerUpsGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1);
+        } while (snakes.Any(snake => snake.GetSnakePositions().Contains(consumablesGridPosition)) && foodGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1 && powerUpsGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1);
 
         return consumablesGridPosition;
     }
@@ -54,7 +56,7 @@ public class LevelGrid
        
         Vector2Int foodGridPosition = SpawnlocationFinder();
 
-        food = GameAssetManager.instance.GetFoodObject(snake.SnakeBodySize);
+        food = GameAssetManager.instance.GetFoodObject(snakes.Min(snake => snake.SnakeBodySize));
         food.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
         foodGameObjects.Add(food);
     }
@@ -152,6 +154,31 @@ public class LevelGrid
         }
 
         return gridPosition;
+    }
+
+    public (bool,bool) SnakeDeathCheck(Vector2Int snakePos, PlayerEnum player)
+    {
+        bool isSnakeDead = false;
+        bool isItASuicide = false;
+
+        foreach (var snake in snakes)
+        {
+            // Check if snake's body contains the given position
+            if (snake.GetSnakeBodyPositions().Contains(snakePos))
+            {
+                isSnakeDead = true;
+
+                // Check if the snake belongs to the same player and if it's a suicide
+                if (snake.Player == player)
+                {
+                    isItASuicide = true;
+                }
+
+                break; // No need to continue if we found a snake with the position
+            }
+        }
+
+        return (isSnakeDead, isItASuicide);
     }
 
 }
