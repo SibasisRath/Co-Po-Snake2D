@@ -46,9 +46,26 @@ public class LevelGrid
         do
         {
             consumablesGridPosition = new Vector2Int(GenerateRandomNumber(width), GenerateRandomNumber(height));
-        } while (snakes.Any(snake => snake.GetSnakePositions().Contains(consumablesGridPosition)) && foodGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1 && powerUpsGameObjects.FindIndex(obj => obj.transform.position == new Vector3(consumablesGridPosition.x, consumablesGridPosition.y, 0)) != -1);
+        } while (IsPositionOccupied(consumablesGridPosition));
 
         return consumablesGridPosition;
+    }
+
+    private bool IsPositionOccupied(Vector2Int position)
+    {
+        // Check if any snake occupies the position
+        if (snakes.Any(snake => snake.GetSnakePositions().Contains(position)))
+            return true;
+
+        // Check if any food object occupies the position
+        if (foodGameObjects.Any(obj => obj != null && obj.transform.position == new Vector3(position.x, position.y, 0)))
+            return true;
+
+        // Check if any power-up object occupies the position
+        if (powerUpsGameObjects.Any(obj => obj != null && obj.transform.position == new Vector3(position.x, position.y, 0)))
+            return true;
+
+        return false;
     }
 
     public void SpawnFood()
@@ -95,7 +112,7 @@ public class LevelGrid
         FoodScript foodScript1 = null;
         for (int i = 0; i < foodGameObjects.Count; i++)
         {
-            if (snakePos == new Vector2Int((int)foodGameObjects[i].transform.position.x, (int)foodGameObjects[i].transform.position.y))
+            if (foodGameObjects[i] != null && snakePos == new Vector2Int((int)foodGameObjects[i].transform.position.x, (int)foodGameObjects[i].transform.position.y))
             {
                 foodScript1 = foodGameObjects[i].GetComponent<FoodScript>();
                 foodScript1.ConsumableState = ConsumableStates.Eaten;

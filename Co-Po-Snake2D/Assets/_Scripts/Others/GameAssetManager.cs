@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GameAssetManager : MonoBehaviour
 {
-   public static GameAssetManager instance;
+    private const int snakeSmallBidyLimit = 5;
+    private const int totalNumberOfMassGainerFoods = 2;
+    private const int totalNumberOfFoods = 4;
+    private const int totalNumberOfPowerUps = 3;
+    public static GameAssetManager instance;
 
     private void Awake()
     {
@@ -75,14 +79,14 @@ public class GameAssetManager : MonoBehaviour
     public GameObject GetFoodObject(int snakeSize)
     {
         GameObject foodObject;
-        if (snakeSize < 5)
+        if (snakeSize < snakeSmallBidyLimit)
         {
-            int a = Random.Range(0, 2);
+            int a = Random.Range(0, totalNumberOfMassGainerFoods);
             foodObject = (a == 0) ? GetAssetGameObject(InGameSprites.MassGainer1) : GetAssetGameObject(InGameSprites.MassGainer2);
         }
         else
         {
-            int a = Random.Range(0, 4);
+            int a = Random.Range(0, totalNumberOfFoods);
             switch (a)
             {
                 case 0:
@@ -111,7 +115,7 @@ public class GameAssetManager : MonoBehaviour
     public GameObject GetPowerUp()
     {
         GameObject powerUp;
-        int randomNumber = Random.Range(0, 3);
+        int randomNumber = Random.Range(0, totalNumberOfPowerUps);
         switch (randomNumber)
         {
             case 0:

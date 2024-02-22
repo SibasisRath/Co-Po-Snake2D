@@ -1,6 +1,5 @@
 public enum ScenesEnum
 {
     MainScene,
-    GameScene,
-    LoadingScene
+    GameScene
 }

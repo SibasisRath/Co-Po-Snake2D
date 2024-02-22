@@ -7,6 +7,7 @@ public class SceneManagerScript : MonoBehaviour
 {
     private static SceneManagerScript instance;
 
+
     private int sceneNumber;
 
     private void Awake()
@@ -35,19 +36,9 @@ public class SceneManagerScript : MonoBehaviour
             case ScenesEnum.GameScene:
                 sceneNumber = 1; //game scene index
                 break;
-            case ScenesEnum.LoadingScene:
-                sceneNumber = 2; //Loading scene index
-                break;
             default:
                 break;
         }
-        SceneManager.LoadScene(2);
-        StartCoroutine(LoadSceneAsynchronously());
-    }
-
-    private IEnumerator LoadSceneAsynchronously()
-    {
-        yield return new WaitForSeconds(3);
         SceneManager.LoadScene(sceneNumber);
     }
 }

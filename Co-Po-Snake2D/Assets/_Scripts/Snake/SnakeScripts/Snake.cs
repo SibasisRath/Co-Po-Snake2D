@@ -39,8 +39,6 @@ public class Snake : MonoBehaviour
     public bool CanDie { get => canDie; set => canDie = value; }
     public PlayerEnum Player { get => player;}
 
-    //public int AdditionalBodySize { get => additionalBodySize; set => additionalBodySize = value; }
-
     private void Awake()
     {
         gridMoveDirection = new Vector2Int(0, gridUnit); //initial movement
@@ -59,29 +57,11 @@ public class Snake : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if ((GameHandler.State == GameStates.Start || GameHandler.State == GameStates.Resume) && SnakeState == SnakeStates.Alive)
         {
             HandelDirection();
             HandleMovement();
         }
-
-       /* else if (GameHandler.State == GameStates.Pause && isPaused == false)
-        {
-            isPaused = true;
-            Debug.Log("gamePaused.");
-        }*/
-       /* else if (SnakeState == SnakeStates.Stoped && isPaused == false)
-        {
-            isPaused = true;
-            Debug.Log("gamePaused.");
-        }*/
-        /*else if (snakeState == SnakeStates.Dead && isDead == false)
-        {
-            isDead = true;
-            Debug.Log("Player is dead.");
-            GameHandler.State = GameStates.GameOver;
-        }*/
     }
 
     private void HandelDirection()
@@ -123,7 +103,7 @@ public class Snake : MonoBehaviour
             if (snakeAteFood)
             {
                 snakeBodySize += foodScript.BodyGrow;
-                playerScore.UpdateScore(foodScript.Score * foodScoreMultplier, player);
+                playerScore.UpdateScore(foodScript.Score * foodScoreMultplier);
                 CreateSnakeBody(foodScript.BodyGrow);
                 Debug.Log(SnakeBodySize);
             }
@@ -149,19 +129,7 @@ public class Snake : MonoBehaviour
                     GameHandler.State = GameStates.GameOver;
                 }
             }
-            
-
         }
-       /* for (int i = 0; i < snakeBodyPartsList.Count; i++)
-        {
-            Vector2Int snakeBodyPartGridPosition = snakeBodyPartsList[i].GetGridPosition();
-            if (snakeGridPosition == snakeBodyPartGridPosition && CanDie)
-            {
-                SnakeState = SnakeStates.Dead;
-                Debug.Log("Player is dead.");
-                GameHandler.State = GameStates.GameOver;
-            }
-        }*/
         transform.position = new Vector3(snakeGridPosition.x, snakeGridPosition.y);
         transform.eulerAngles = new Vector3(0,0,HandleRotation(gridMoveDirection) - 90f);
         UpdateSnakeBody();

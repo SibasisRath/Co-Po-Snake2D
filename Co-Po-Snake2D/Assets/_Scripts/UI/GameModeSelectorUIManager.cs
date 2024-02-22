@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -20,6 +18,7 @@ public class GameModeSelectorUIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("mode selection.");
         mainPanel.SetActive(false);
 
         backToMainButton.gameObject.SetActive(true);
@@ -29,12 +28,6 @@ public class GameModeSelectorUIManager : MonoBehaviour
         SetUpButton(backToMainButton, BackToMainButtonIsClicked);
         SetUpButton(singleModeButton, SingleModeButtonIsClicked);
         SetUpButton(copoModeButton, CopoModeButtonIsClicked);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void SetUpButton(Button button, UnityAction unityAction)
@@ -59,12 +52,14 @@ public class GameModeSelectorUIManager : MonoBehaviour
     private void SingleModeButtonIsClicked()
     {
         modeManager.GameMode = GameModes.SinglePlayer;
+        Debug.Log($"mode selection.{modeManager.GameMode}");
         SceneManagerScript.Instance.SceneLoading(ScenesEnum.GameScene);
     }
 
     private void CopoModeButtonIsClicked()
     {
         modeManager.GameMode = GameModes.CopoPlayer;
+        Debug.Log($"mode selection.{modeManager.GameMode}");
         SceneManagerScript.Instance.SceneLoading(ScenesEnum.GameScene);
     }
 }

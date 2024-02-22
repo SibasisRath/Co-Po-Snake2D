@@ -13,23 +13,18 @@ public class PlayerScore : MonoBehaviour
     private void Start()
     {
         score = 0;
-        //UpdateUI();
+        UpdateUI();
     }
 
-    public void UpdateScore(int score, PlayerEnum player)
+    public void UpdateScore(int score)
     {
         this.score += score;
-        UpdateUI(player);
+        UpdateUI();
         Debug.Log(Score);
     }
 
-    private void UpdateUI(PlayerEnum player)
+    private void UpdateUI()
     {
-        if (player == PlayerEnum.Player1)
-        {
-            playerScore.text = "Player Score\n" + score;
-        }
-        
+        playerScore.text = "Player Score\n" + score;
     }
-
 }

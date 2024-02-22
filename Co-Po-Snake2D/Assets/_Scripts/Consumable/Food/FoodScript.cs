@@ -7,7 +7,7 @@ public class FoodScript : MonoBehaviour
     private ConsumableStates consumableState;
     [SerializeField] private int score;
     [SerializeField] private int bodyGrow;
-    [SerializeField] private float foodLifeTime;
+    [SerializeField] private float foodLifeTime = 7f;
 
     public int Score { get => score; }
     public int BodyGrow { get => bodyGrow;}
@@ -16,7 +16,6 @@ public class FoodScript : MonoBehaviour
     private void Start()
     {
         consumableState = ConsumableStates.Spawned;
-        foodLifeTime = 7f;
         StartCoroutine(FoodLifeTime());
     }
 
@@ -24,9 +23,6 @@ public class FoodScript : MonoBehaviour
 
     private IEnumerator FoodLifeTime()
     {
-        /* yield return new WaitForSeconds(foodLifeTime);
-         consumableState = ConsumableStates.Rotten;*/
-
         float elapsedTime = 0f; // Track the elapsed time when paused
 
         while (elapsedTime < foodLifeTime)
